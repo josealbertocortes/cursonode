@@ -3,11 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso denegado</title>
+    <title>gOOGLE SIGN IN </title>
+    <meta name="google-signin-client_id" content="498368001167-hhtvg9np996pmnale4q978lpjvvd6sm7.apps.googleusercontent.com">
 </head>
 <body>
 
-    <h1>Acceso Denegado</h1>
-    
+    <h1>GOOGLE SIG IN </h1>
+    <hr>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <a href="#" onclick="signOut();">Sign out</a>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <script>
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+            console.log('User signed out.');
+            });
+        }
+    </script>
+
+
+
+
+
+    <script>
+        var url =(window.location.hostname.includes('localhost'))
+                ? 'http://localhost:3005/api/auth/google'
+                : 'https://restserver-node-alberto.herokuapp.com'
+        
+        function onSignIn(googleUser) {
+      var id_token = googleUser.getAuthResponse().id_token;
+            const data = {id_token}
+            fetch(url,{
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify(data)
+            })
+            .then(res=>res.json())
+            .then(data=>console.log("nuestro sercer",data))
+            .catch(console.log)
+        }
+    </script>
 </body>
 </html>
